@@ -52,7 +52,7 @@
                                 <div class="card-inner">
                                     <h5 class="card-title">Responden Triwulan <?= $this->Model->getRomawi($i); ?></h5>
                                     <h5 class="font-weight-light pb-2 mb-1 border-bottom"><?= !$totalRespondenTriwulan ? '0' : $totalRespondenTriwulan[$i - 1]['total'] ?></h5>
-                                    <p class="tx-12 text-muted">Total Responden Triwulan <?= $this->Model->getRomawi($i); ?> Tahun <?= date('Y') ?></p>
+                                    <p class="tx-12 text-muted">Total Responden Triwulan <?= $this->Model->getRomawi($i); ?> Tahun 2020</p>
                                     <div class="card-icon-wrapper">
                                         <i class="material-icons">trending_up</i>
                                     </div>

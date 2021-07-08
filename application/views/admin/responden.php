@@ -30,11 +30,15 @@
                                 <h1 class="mdc-typography--headline2">Data Responden</h1>
                             </div>
                             <div class="toolbar">
-                                <select id="selectFilter" onchange="setFilter(this)">
+                                <select id="selectFilter" onchange="setFilter(this.value)">
                                     <option value="">Semua Data</option>
                                     <?php for ($i = 1; $i < 5; $i++) : ?>
                                         <option value="<?= $i ?>">Triwulan <?= $this->Model->getRomawi($i); ?></option>
                                     <?php endfor ?>
+                                </select>
+                                <select id="selectFilterTahun" onchange="setFilter(this.value, true)">
+                                    <option value="2020">2020</option>
+                                    <option value="2021">2021</option>
                                 </select>
                                 <button class="mdc-button mdc-button--raised" onclick="cetakData()">
                                     <i class="material-icons mdc-button__icon">print</i>
@@ -111,6 +115,7 @@
 
         (function() {
             $('#selectFilter').select2()
+            $('#selectFilterTahun').select2()
 
             $.ajax(`<?= base_url('api/getData') ?>`, {
                 data: {
@@ -183,11 +188,18 @@
             return moment(new Date(d.getFullYear(), m, 1)).format('MM-DD-YYYY');
         }
 
-        function setFilter(e) {
+        function setFilter(val, isTahun = false) {
             let dataFilter = {};
+            let tanggal;
 
-            if (e.value) {
-                const tanggal = moment(new Date()).quarter(e.value);
+            if (val) {
+                if (isTahun) {
+                    const triwulan = $('#selectFilter').val()
+                    tanggal = moment(new Date(`${val}`)).quarter(triwulan);
+                } else {
+                    const tahun = $('#selectFilterTahun').val()
+                    tanggal = moment(new Date(`${tahun}`)).quarter(val);
+                }
 
                 dataFilter = {
                     tanggal: getDates(tanggal.startOf('month').format('MM-DD-YYYY'), tanggal.add(2, 'M').endOf('month').format('MM-DD-YYYY'))
@@ -199,13 +211,14 @@
 
         function cetakData() {
             const triwulan = $('#selectFilter').val();
+            const tahun = $('#selectFilterTahun').val();
 
             if (!triwulan) {
                 $('#selectFilter').select2('open')
                 return;
             }
 
-            const URL = '<?= base_url('cetak?') ?>' + `triwulan=${triwulan}`
+            const URL = '<?= base_url('cetak?') ?>' + `triwulan=${triwulan}&tahun=${tahun}`
             const laporan = "<embed src='" + URL + "' frameborder='1' width='100%'' height='400px'>";
 
             $('#myCetak').modal();

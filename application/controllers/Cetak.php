@@ -11,6 +11,7 @@ class Cetak extends CI_Controller
     public function index()
     {
         $triwulan = $this->input->get('triwulan');
+        $tahun = $this->input->get('tahun');
 
         $query = $this->Model->query("SELECT jawaban FROM tbl_survei WHERE QUARTER(ditambahkan_pada) = '$triwulan'");
 
@@ -52,7 +53,7 @@ class Cetak extends CI_Controller
 
         $pdf->SetFont('helvetica', 'B', 12, '', true);
         $pdf->cell(0, 0, 'LAPORAN SURVEI KEPUASAN MASYARAKAT', 0, 1, 'C');
-        $pdf->cell(0, 0, 'TRIWULAN ' . $this->Model->getRomawi($triwulan) . ' TAHUN ' . date('Y'), 0, 1, 'C');
+        $pdf->cell(0, 0, 'TRIWULAN ' . $this->Model->getRomawi($triwulan) . ' TAHUN ' . $tahun, 0, 1, 'C');
 
         $pdf->ln();
 
